@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>de.abg.jreichert.repositorytarget</groupId>
+  <artifactId>de.abg.jreichert.repositorytarget.parent</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20131219.184559</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20131219184559</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.1.0-20131219.184559-1</value>
+        <updated>20131219184559</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
