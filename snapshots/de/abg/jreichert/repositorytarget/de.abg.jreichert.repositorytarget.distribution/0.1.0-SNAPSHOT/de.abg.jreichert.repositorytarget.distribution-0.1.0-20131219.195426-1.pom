@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<prerequisites>
+		<maven>3.0</maven>
+	</prerequisites>
+
+	<parent>
+		<groupId>de.abg.jreichert.repositorytarget</groupId>
+		<artifactId>de.abg.jreichert.repositorytarget.config.parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+		<relativePath>../../releng/de.abg.jreichert.repositorytarget.config.parent/pom.xml</relativePath>
+	</parent>
+
+	<artifactId>de.abg.jreichert.repositorytarget.distribution</artifactId>
+	<packaging>pom</packaging>
+	<name>Repository Target Generator</name>
+	
+	<properties>
+		<distribution.dir>${project.basedir}/../../releng/de.abg.jreichert.repositorytarget.parent/target/repository</distribution.dir>
+		<github-site-maven-plugin.version>0.9</github-site-maven-plugin.version>
+		<github.global.server>github</github.global.server>
+	</properties>
+	
+	<modules>
+		<module>../../releng/de.abg.jreichert.repositorytarget.targetplatform</module>
+		<module>../../releng/de.abg.jreichert.repositorytarget.repository.parent</module>
+	</modules>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>${github-site-maven-plugin.version}</version>
+				<configuration>
+					<message>Maven artifacts for ${project.groupId}:${project.artifactId}:${project.version} ${maven.build.timestamp}</message>
+					<noJekyll>true</noJekyll>
+					<outputDirectory>${distribution.dir}</outputDirectory>
+					<merge>false</merge>
+					<repositoryOwner>joergreichert</repositoryOwner>
+					<repositoryName>distributions</repositoryName>
+					<branch>refs/heads/master</branch>
+					<path>snapshots</path>
+					<oauth2Token>${env.CI_CF_TOKEN}</oauth2Token>
+					<includes>
+						<include>**/*</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<profiles>
+		<profile>
+			<id>modules-default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.activeannotations</module>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.database</module>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.repositorytargetgenerator</module>
+				<module>../../releng/de.abg.jreichert.repositorytarget.parent</module>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.dsl</module>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.dsl.ui</module>
+				<module>../../plugins/de.abg.jreichert.repositorytarget.transform</module>
+				<module>../../tests/de.abg.jreichert.repositorytarget.dsl.tests</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>modules-targetplatform</id>
+			<activation>
+				<property>
+					<name>modules-targetplatform</name>
+				</property>
+			</activation>
+			<modules>
+				<module>../../releng/de.abg.jreichert.repositorytarget.repository</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>modules-assembly</id>
+			<activation>
+				<property>
+					<name>modules-assembly</name>
+				</property>
+			</activation>
+			<modules>
+				<module>../../releng/de.abg.jreichert.repositorytarget.parent</module>
+				<module>../../features/de.abg.jreichert.repositorytarget.feature</module>
+				<module>../../features/de.abg.jreichert.repositorytarget.updatesite</module>
+			</modules>
+		</profile>
+	</profiles>
+</project>
